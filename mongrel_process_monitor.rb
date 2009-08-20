@@ -2,7 +2,6 @@ require 'net/http'
 require 'uri'
 require 'mongrel_port_manager'
 
-
 #based on url_monitor by Andre Lewis
 #http://www.highgroove.com
 
@@ -15,13 +14,11 @@ class MongrelProcessMonitor
       return [] if mongrel_ports.empty? || mongrel_ports.nil?
       response_summary = Hash.new
       mongrel_ports.each do |port|
-            response = self.http_response("http://localhost:#{port}/")
-            response_summary[port] = self.valid_http_response?(response)
+        response = self.http_response("http://localhost:#{port}/")
+        response_summary[port] = self.valid_http_response?(response)
       end
       response_summary
   end
-
-
 
   def valid_http_response?(result)
     [Net::HTTPOK,Net::HTTPFound].include?(result.class)
@@ -59,9 +56,4 @@ class MongrelProcessMonitor
 
     return response
   end
-
-
 end
-  
-p MongrelProcessMonitor.new.process_status
-

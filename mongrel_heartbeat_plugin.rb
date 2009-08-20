@@ -1,7 +1,7 @@
 require 'mongrel_process_monitor'
 class MongrelHeartbeatPlugin   < Scout::Plugin
   def build_report
-    results = MongrelProcessMonitor.process_status
+    results = MongrelProcessMonitor.new.process_status
     is_up = true
     results.each_pair do |key,value|
        unless value
@@ -12,10 +12,8 @@ class MongrelHeartbeatPlugin   < Scout::Plugin
     end
 
     report(:up => is_up)
-    remember(:was_up => is_up)
-    if is_up
-      memory.delete(:down_at)
-    end
-
+    remember(:was_up => is_up)    
+  rescue Exception => e
+    error("Error monitoring mongrels", "#{e.message}<br><br>#{e.backtrace.join('<br>')}")
   end
 end
