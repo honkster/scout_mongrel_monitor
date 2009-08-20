@@ -1,10 +1,8 @@
 require 'rubygems'
 require 'spec'
-require "mongrel_port_manager"
+require "mongrel_heartbeat_plugin"
 
 describe "MongrelPortManager#mongrel_ports" do
-  CONFIG_FILE = "/data/honk/shared/config/mongrel_cluster.yml"
-
   before do
     @port_manager = MongrelPortManager.new
     YAML.stub!(:load_file).and_return([])
